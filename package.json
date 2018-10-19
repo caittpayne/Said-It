@@ -4,7 +4,7 @@
   "description": "A Reddit-like application for users to discuss and share content",
   "main": "\u001b[\u001b[C\u001bsrc/server.js)",
   "scripts": {
-    "test": "SET NODE_ENV=test && jasmine",
+    "test": "SET NODE_ENV=test&& jasmine",
     "start": "node src/server.js"
   },
   "keywords": [
@@ -14,10 +14,12 @@
   "author": "Cait Payne",
   "license": "ISC",
   "devDependencies": {
+    "faker": "^4.1.0",
     "jasmine": "^3.2.0",
     "request": "^2.83.0"
   },
   "dependencies": {
+    "body-parser": "^1.18.3",
     "dotenv": "^5.0.0",
     "ejs": "^2.5.7",
     "express": "^4.16.2",
