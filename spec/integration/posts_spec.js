@@ -14,11 +14,10 @@ describe('routes : posts', () => {
     sequelize.sync({force: true}).then((res) => {
       Topic.create({
       title: 'Winter Games',
-      description: 'Post your winter games stories.'})
+      description: 'Post your winter games stories.'
     })
     .then((topic) => {
       this.topic = topic;
-      console.log('THE TOPIC IS ' + topic);
 
       Post.create({
         title: 'Snowball Fighting',
@@ -35,7 +34,8 @@ describe('routes : posts', () => {
       });
     });
   });
-  /*describe('GET /topics/:topicId/posts/new', () => {
+});
+  describe('GET /topics/:topicId/posts/new', () => {
     it('should render a new post form', (done) => {
       request.get(`${base}/${topic.id}/posts/new`, (err, res, body) => {
         expect(err).toBeNull();
@@ -43,5 +43,6 @@ describe('routes : posts', () => {
         done();
       });
     });
-  }); */
+  });
+  
 });

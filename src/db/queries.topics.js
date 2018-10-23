@@ -15,14 +15,7 @@ module.exports = {
   },
 
   getTopic(id, callback) {
-    console.log('The TOPIC IS ' + Topic.findById(id));
     return Topic.findById(id)
-  /*  return Topic.findById(id, {
-      include: [{
-        model: Post,
-        as: 'posts'
-      }]
-    }) */
     .then((topic) => {
       callback(null, topic);
     })
