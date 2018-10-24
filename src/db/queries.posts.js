@@ -29,7 +29,7 @@ module.exports = {
     .then((deletedRecordsCount) => {
       callback(null, deletedRecordsCount);
     })
-    .catch((Err) => {
+    .catch((err) => {
       callback(err);
     })
   },
@@ -53,5 +53,5 @@ module.exports = {
   }
 
 
-  
+
 }
