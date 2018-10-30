@@ -8,7 +8,7 @@
 
     <main class="container">
       <h1><%= topic.title %></h1>
-        <% if(currentUser) { %>}
+        <% if(currentUser) { %>
         <a href ="/topics/<%= topic.id %>/posts/new" class="btn btn-success">New Post</a>
         <a href ="/topics/<%= topic.id %>/flairs/new" class="btn btn-success">New Flair</a>
         <% } %>

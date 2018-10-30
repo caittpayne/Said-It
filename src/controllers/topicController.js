@@ -18,7 +18,6 @@ module.exports = {
   }, 
 
   new(req, res, next) {
-    console.log('USER ' + req.body.userId);
     const authorized = new Authorizer(req.user).new();
     if(authorized) {
       res.render('topics/new');
