@@ -10,31 +10,37 @@ describe('routes : posts', () => {
   beforeEach((done) => {
     this.topic;
     this.post;
+    this.user;
 
     sequelize.sync({force: true}).then((res) => {
-      Topic.create({
-      title: 'Winter Games',
-      description: 'Post your winter games stories.'
-    })
-    .then((topic) => {
-      this.topic = topic;
+      User.create({
+        email: 'user@email.com',
+        password: '1234567'
+      })
+      .then((user) => {
+        this.user = user;
 
-      Post.create({
-        title: 'Snowball Fighting',
-        body: 'So much snow!',
-        topicId: topic.id
-      })
-      .then((post) => {
-        this.post = post;
-        done();
-      })
-      .catch((err) => {
-        console.log(err);
-        done();
+        Topic.create({
+          title: 'Winter Games',
+          description: 'Post your Winter Games stories.',
+          posts: [{
+            title: 'Snowball Fighting',
+            body: 'So much snow!',
+            userId: this.user.id
+          }]
+        }, {
+          include: {
+            model: Post,
+            as: 'posts'
+          }
+        })
+        .then((topic) => {
+          this.topic = topic;
+          this.post = topic.posts[0];
+        });
       });
     });
   });
-});
   describe('GET /topics/:topicId/posts/new', () => {
     it('should render a new post form', (done) => {
       request.get(`${base}/${this.topic.id}/posts/new`, (err, res, body) => {

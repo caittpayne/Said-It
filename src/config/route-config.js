@@ -8,6 +8,12 @@ module.exports = {
     const postRoutes = require('../routes/posts');
     const flairRoutes = require('../routes/flairs');
     const userRoutes = require('../routes/users');
+
+    if(process.env.NODE_ENV === 'test') {
+      const mockAuth = require('../../spec/support/mock-auth.js');
+      mockAuth.fakeIt(app);
+    }
+
     app.use(staticRoutes);
     app.use(marcoPolo);
     app.use(about);

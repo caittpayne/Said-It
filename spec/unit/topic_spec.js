@@ -1,36 +1,45 @@
 const sequelize = require('../../src/db/models/index').sequelize;
 const Topic = require('../../src/db/models').Topic;
 const Post = require('../../src/db/models').Post;
+const User = require('../../src/db/models').User;
 const { Console } = require('console');
 
 describe('Topic', () => {
   beforeEach((done) => {
     this.topic;
     this.post;
+    this.user;
+
     sequelize.sync({force: true}).then((res) => {
+      User.create({
+        email: "user@email.com",
+        password: "1234567"
+      })
+      .then((user) => {
+      this.user = user;
+
       Topic.create({
-        title: 'Trip to Mars',
-        description: 'A diary of a trip to Mars'
+        title: "Expeditions to Alpha Centauri",
+        description: "Reports from a visit to the stars",
+        posts: [{
+          title: 'Day 1: Leaving Earth',
+          body: "I saw some rocks",
+          userId: this.user.id
+        }]
+      }, {
+        include: {
+          model: Post,
+          as: "posts"
+        }
       })
       .then((topic) => {
         this.topic = topic;
-
-        Post.create({
-          title: 'Day 1: Leaving Earth',
-          body: 'I was very excited',
-          topicId: this.topic.id
-        })
-        .then((post) => {
-          this.post = post;
-          done();
-        });
-      })
-      .catch((err) => {
-        console.log(err);
+        this.post = topic.posts[0];
         done();
       });
     });
   });
+});
   describe('#create()', () => {
     it('should create a topic with a title and description', (done) => {
       Topic.create({
@@ -59,4 +68,6 @@ describe('Topic', () => {
       });
     });
   });
+
+
 });
