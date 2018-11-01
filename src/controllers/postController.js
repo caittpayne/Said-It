@@ -3,9 +3,6 @@ const Authorizer = require('../policies/post');
 const { Console } = require('console');
 
 module.exports = {
-  new(req, res, next){
-    res.render('posts/new', {topicId: req.params.topicId});
-  },
 
   new(req, res, next) {
     const authorized = new Authorizer(req.user).new();
@@ -14,7 +11,7 @@ module.exports = {
       res.render('posts/new', {topicId: req.params.topicId});
     } else {
       req.flash('notice', 'You are not authorized to do that.');
-      res.redirect(`/topics/${req.params.topicId}`);
+      res.redirect(`/topics/${req.params.topicId}/`);
     }
   },
 
@@ -55,6 +52,7 @@ module.exports = {
   destroy(req, res, next) {
       postQueries.deletePost(req, (err, post) => {
         if(err) {
+          req.flash('notice', 'You are not authorized to do that.')
           res.redirect(`/topics/${req.params.topicId}/posts/${req.params.id}`)
         } else {
           res.redirect(303, `/topics/${req.params.topicId}`)
@@ -64,17 +62,17 @@ module.exports = {
 
   edit(req, res, next) {
     postQueries.getPost(req.params.id, (err, post) => {
-      if(err || post == null) {
-        req.flash(err);
-        res.redirect(`/topics/${req.params.topicId}`);
-      } else {
-          const authorized = new Authorizer(req.user, post).edit();
-          if(authorized) {
-              res.render('posts/edit', {post});
-          }  else {
-            req.flash('notice', 'You are not authorized to do that.');
-            res.redirect(`/topics/${req.params.topicId}/posts/${req.params.id}`);
-          } 
+      const authorized = new Authorizer(req.user, post).edit();
+      
+      if(authorized) {
+        if(err || post == null) {
+          res.redirect(404, `/topics/${req.params.topicId}`);
+        } else {
+            res.render('posts/edit', {post});
+          }
+        } else {
+          req.flash('notice', 'You are not authorized to do that.');
+          res.redirect(`/topics/${req.params.topicId}/posts/${req.params.id}`);
         }
       });  
     },

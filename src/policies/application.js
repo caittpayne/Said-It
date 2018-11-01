@@ -5,7 +5,10 @@ module.exports = class ApplicationPolicy {
     }
 
     _isOwner() {
-        return this.record && (this.record.userId == this.user.id);
+        if(this.user) {
+            return this.record && (this.record.userId == this.user.id);  
+        }
+        return false;
     }
 
     _isAdmin() {
