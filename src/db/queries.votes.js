@@ -28,7 +28,7 @@ module.exports = {
                     userId: req.user.id
                 })
                 .then((vote) => {
-                    callback(nulle, vote);
+                    callback(null, vote);
                 })
                 .catch((err) => {
                     callback(err);
