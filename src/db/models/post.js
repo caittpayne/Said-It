@@ -1,3 +1,4 @@
+const { Console } = require('console');
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var Post = sequelize.define('Post', {
@@ -39,15 +40,36 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'postId',
         as: 'votes'
     });
+    
+  };
 
-    Post.prototype.getPoints = function() {
-        if(this.votes.length === 0) return 0
+  Post.prototype.getPoints = function() {
+    if(this.votes && this.votes.length === 0) return 0
 
+        
         return this.votes
         .map((v) => { return v.value })
         .reduce((prev, next) => { return prev + next });
     };
-    
-  };
+
+    Post.prototype.hasUpvoteFor = function() {
+        return this.getVotes({
+            where: {
+              userId: this.userId,
+              value: 1
+            },
+        });
+    };
+
+    Post.prototype.hasDownvoteFor = function() {
+        return this.getVotes({
+            where: {
+              userId: this.userId,
+              value: -1
+            },
+        });
+    };
+  
   return Post;
+    
 };

@@ -2,6 +2,8 @@ const sequelize = require('../../src/db/models/index').sequelize;
 const Topic = require('../../src/db/models').Topic;
 const Post = require('../../src/db/models').Post;
 const User = require('../../src/db/models').User;
+const Vote = require('../../src/db/models').Vote;
+const { Console } = require('console');
 
 describe('Post', () => {
   beforeEach((done) => {
@@ -32,10 +34,10 @@ describe('Post', () => {
           }
         })
         .then((topic) => {
-          this.topic = topic;
-          this.post = topic.posts[0];
-          done();
-        })
+            this.topic = topic;
+            this.post = topic.posts[0];
+            done();
+        });
       });
     });
   });
@@ -124,5 +126,69 @@ describe('Post', () => {
       });
     });
   });
+  describe('#getPoints()', () => {
+    it('should return the number of votes associated with the post', (done) => {
+        Vote.create({
+            value: 1,
+            userId: this.user.id,
+            postId: this.post.id
+        })
+        .then((vote) => {
+           this.post.getPoints()
+           .then((points) => {
+               expect(points).toBe(1);
+               done();
+               
+           })
+        })
+        .catch((err) => {
+            console.log(err);
+            done();
+        });
+    });
+}); 
+describe('#hasUpvoteFor()', () => {
+    it('should return true if the user with matching id has an upvote', (done) => {
+        Vote.create({
+            value: 1,
+            userId: this.user.id,
+            postId: this.post.id
+        })
+        .then((vote) => {
+            this.post.hasUpvoteFor()
+            .then((upvote) => {
+                expect(upvote.value).toBe(1);
+                expect(upvote.userId).toBe(this.user.id);
+                done();
+            })
+        })
+        .catch((err) => {
+            console.log(err);
+            done();
+        });
+    });
+});
+describe('#hasDownvoteFor()', () => {
+    it('should return true if the user has an downvote', (done) => {
+        Vote.create({
+            value: -1,
+            userId: this.user.id,
+            postId: this.post.id
+        })
+        .then((vote) => {
+            this.post.hasDownvoteFor()
+            .then((downvote) => {
+                expect(downvote.value).toBe(true);
+                expect(downvote.userId).toBe(this.user.id);
+                done();
+            })
+        })
+        .catch((err) => {
+            console.log(err);
+            done();
+        });
+    });
+}); 
+
 
 });

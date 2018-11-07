@@ -84,7 +84,7 @@ describe('routes : votes', () => {
             });
         });
     });
-    describe('signed ni user voting on a post', () => {
+    describe('signed in user voting on a post', () => {
         beforeEach((done) => {
             request.get({
                 url: 'http://localhost:3000/auth/fake',
@@ -148,6 +148,29 @@ describe('routes : votes', () => {
                 });
             });
         });
+        describe('GET /topics/:topicId/posts/:postId/votes/downvote', () => {
+            it('should not create more than one vote for a user', (done) => {
+                const options = {
+                    url: `${base}${this.topic.id}/posts/${this.post.id}/votes/downvote`
+                };
+                request.get(options, (err, res, body) => {
+                    Vote.findAll({
+                        where: {
+                            userId: this.user.id,
+                            postId: this.post.id
+                        }
+                    })
+                    .then((votes) => {
+                        expect(votes.length).toBe(1);
+                        done();
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        done();
+                    });
+                });
+            });
+        }); 
     });
 
 });

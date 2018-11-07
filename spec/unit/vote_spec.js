@@ -108,6 +108,21 @@ describe('Vote', () => {
                   done();
               });
           });
+          it('should not create a vote with a value other than 1 or -1', (done) => {
+              Vote.create({
+                  value: 3
+              })
+              .then((vote) => {
+                  done();
+              })
+              .catch((err) => {
+                  expect(err.message).toContain('Vote.userId cannot be null');
+                  expect(err.message).toContain('Vote.postId cannot be null');
+                  expect(err.message).toContain('Validation isIn on value failed');
+                  done();
+              });
+          });
+      
       });
     describe('#setUser()', () => {
         it('should associate a vote and a user together', (done) => {
@@ -209,4 +224,6 @@ describe('Vote', () => {
     });
 
 
-})
+
+
+});
