@@ -10,6 +10,7 @@ describe('Post', () => {
     this.topic;
     this.post;
     this.user;
+    this.vote;
 
     sequelize.sync({force: true}).then((res) => {
       User.create({
@@ -128,18 +129,24 @@ describe('Post', () => {
   });
   describe('#getPoints()', () => {
     it('should return the number of votes associated with the post', (done) => {
-        Vote.create({
-            value: 1,
+        Post.create({
+            title: "Post Test",
+            body: "Post body",
+            topicId: this.topic.id,
             userId: this.user.id,
-            postId: this.post.id
+            votes: [{
+                value: 1,
+                userId: this.user.id
+            }]
+        }, {
+            include: {
+                model: Vote,
+                as: "votes"
+            }
         })
-        .then((vote) => {
-           this.post.getPoints()
-           .then((points) => {
-               expect(points).toBe(1);
-               done();
-               
-           })
+        .then((post) => {
+            expect(post.getPoints()).toBe(1);
+            done();
         })
         .catch((err) => {
             console.log(err);
@@ -149,18 +156,24 @@ describe('Post', () => {
 }); 
 describe('#hasUpvoteFor()', () => {
     it('should return true if the user with matching id has an upvote', (done) => {
-        Vote.create({
-            value: 1,
+        Post.create({
+            title: "Landing on the moon",
+            body: "It was amazing",
+            topicId: this.topic.id,
             userId: this.user.id,
-            postId: this.post.id
+            votes: [{
+                value: 1,
+                userId: this.user.id
+            }]
+        }, {
+            include: {
+                model: Vote,
+                as: "votes"
+            }
         })
-        .then((vote) => {
-            this.post.hasUpvoteFor()
-            .then((upvote) => {
-                expect(upvote.value).toBe(1);
-                expect(upvote.userId).toBe(this.user.id);
-                done();
-            })
+        .then((post) => {
+            expect(post.hasUpvoteFor(post.userId)).toBe(true);
+            done();
         })
         .catch((err) => {
             console.log(err);
@@ -170,18 +183,24 @@ describe('#hasUpvoteFor()', () => {
 });
 describe('#hasDownvoteFor()', () => {
     it('should return true if the user has an downvote', (done) => {
-        Vote.create({
-            value: -1,
+        Post.create({
+            title: "Landing on Mars",
+            body: "It was very orange and dusty.",
+            topicId: this.topic.id,
             userId: this.user.id,
-            postId: this.post.id
+            votes: [{
+                value: -1,
+                userId: this.user.id
+            }]
+        }, {
+            include: {
+                model: Vote,
+                as: "votes"
+            }
         })
-        .then((vote) => {
-            this.post.hasDownvoteFor()
-            .then((downvote) => {
-                expect(downvote.value).toBe(true);
-                expect(downvote.userId).toBe(this.user.id);
-                done();
-            })
+        .then((post) => {
+            expect(post.hasDownvoteFor(post.userId)).toBe(true);
+            done();
         })
         .catch((err) => {
             console.log(err);
