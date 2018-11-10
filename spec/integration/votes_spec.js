@@ -66,6 +66,7 @@ describe('routes : votes', () => {
                     url: `${base}${this.topic.id}/posts/${this.post.id}/votes/upvote`
                 };
                 request.get(options, (err, res, body) => {
+                    console.log('user ' + this.user.id);
                     Vote.findOne({
                         where: {
                             userId: this.user.id,

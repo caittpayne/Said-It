@@ -21,7 +21,7 @@ module.exports = {
   },
 
   getUser(id, callback) {
-    let result = {};
+    let result = [];
     User.findById(id)
     .then((user) => {
         if(!user) {

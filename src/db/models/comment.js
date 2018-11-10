@@ -1,3 +1,5 @@
+const models = require('../models');
+
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var Comment = sequelize.define('Comment', {
@@ -26,18 +28,20 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE'
     });
 
-    Comment.addScope('lastFiveFor', (userId) => {
-        return {
-            include: [{
-                model: models.Post
-            }],
-            where: { userId: userId },
-            limit: 5,
-            order: [['createdAt', 'DESC']]
-        }
-    });
+    
+  Comment.addScope('lastFiveFor', (userId) => {
+    return {
+        include: [{
+            model: models.Post
+        }],
+        where: { userId: userId },
+        limit: 5,
+        order: [['createdAt', 'DESC']]
+    }
+});
 
   };
+
 
   return Comment;
 };
