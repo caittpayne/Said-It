@@ -13,7 +13,7 @@ module.exports = {
             });
         } else {
             req.flash('notice', 'You must be signed in to do that.')
-            res.redirect(req.headers.referer);
+            res.redirect('/users/sign_in');
         }
     },
 
@@ -28,7 +28,7 @@ module.exports = {
             });
         } else {
             req.flash('notice', 'You must be signed in to do that.')
-            res.redirect(req.headers.referer);
+            res.redirect('/users/sign_in');
         }
     }
 }

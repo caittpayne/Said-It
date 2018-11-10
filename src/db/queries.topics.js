@@ -28,7 +28,6 @@ module.exports = {
      }]
    })
     .then((topic) => {
-      console.log(topic.title);
       callback(null, topic);
     })
     .catch((err) => {

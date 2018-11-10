@@ -58,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
           userId: post.userId,
           postId: post.id
         });
-      });
+      }); 
   
     
   };

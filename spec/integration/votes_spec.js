@@ -65,22 +65,24 @@ describe('routes : votes', () => {
                 const options = {
                     url: `${base}${this.topic.id}/posts/${this.post.id}/votes/upvote`
                 };
+
+                let voteCountBeforeCreate;
+                this.post.getVotes()
+                .then((votes) => {
+                    voteCountBeforeCreate = votes.length;
+                })
+
                 request.get(options, (err, res, body) => {
-                    console.log('user ' + this.user.id);
-                    Vote.findOne({
-                        where: {
-                            userId: this.user.id,
-                            postId: this.post.id
-                        }
-                    })
-                    .then((vote) => {
-                        expect(vote).toBeNull();
+                    Vote.all()
+                    .then((votes) => {
+                        expect(voteCountBeforeCreate).toBe(votes.length);
                         done();
                     })
                     .catch((err) => {
                         console.log(err);
                         done();
                     });
+                    
                 });
             });
         });

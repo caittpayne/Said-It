@@ -33,7 +33,6 @@ module.exports = {
   },
 
   signIn(req, res, next) {
-    console.log('Signed In');
     passport.authenticate('local')(req, res, function () {
       if(!req.user) {
         req.flash('notice', 'Sign in failed. Please try again.');
@@ -52,9 +51,7 @@ module.exports = {
   },
 
   show(req, res, next) {
-      console.log(req.params.id);
       userQueries.getUser(req.params.id, (err, result) => {
-        console.log('result ' + result)
 
         if(err || result.user === undefined) {
             

@@ -53,7 +53,6 @@ describe('routes: topics', () => {
       describe('GET /topics', () => {
         it('should respond with all topics', (done) => {
           request.get(base, (err, res, body) => {
-            console.log('GET ALL' + res.body.title);
             expect(err).toBeNull();
             expect(body).toContain('Topics');
             expect(body).toContain('JS Frameworks');
