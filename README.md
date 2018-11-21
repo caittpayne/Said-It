@@ -7,7 +7,7 @@ Additional features of Said-It include administrative privledges for certain use
 
 ## Appearance <a id="appearance"></a>
 
-![Home Page](./assets/screenshots/homepage.png?raw=true)
+![Home Page](./src/assets/screenshots/homepage.png?raw=true)
 
 
 ## Built With <a id="built-with"></a>
