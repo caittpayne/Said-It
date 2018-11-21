@@ -1,3 +1,43 @@
 body {
-  padding-top: 54px;
+  padding-top: 60px;
+  background: #F1F0EE;
+}
+
+.navbar {
+    background: white;
+}
+
+.navbar-brand {
+    color: #D2373B !important;
+}
+
+.jumbotron {
+    background: #59C4DC;
+    padding: 70px;
+    color: white;
+}
+
+.card-title {
+    color: #D2373B; 
+}
+
+
+.btn {
+    background: #F0474B;
+    border: 0px;
+    width: 200px;
+}
+
+.btn:hover {
+    background: #EF7376;
+    color: white;
+}
+
+.btn:active {
+    background: #EF7376 !important;
+    outline: none !important;
+}
+
+.vote-arrow {
+    color: #59C4DC;
 }
